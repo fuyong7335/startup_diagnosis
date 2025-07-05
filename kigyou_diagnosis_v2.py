@@ -8,7 +8,7 @@ openai.api_key = st.secrets["openai_api_key"]
 
 # --- ページ設定 ---
 st.set_page_config(page_title="起業タイプ診断", layout="centered")
-st.title("\U0001F331 起業タイプ診断")
+st.title("起業タイプ診断")
 st.write("以下の質問に、スライダーであなたの気持ちの度合いを選んでください。スライダー上の位置に 1〜5 の数字が表示されます。")
 
 # --- 質問セット ---
@@ -74,7 +74,7 @@ with st.form("diagnosis_form"):
                 key=f"Q{q_num}"
             )
             q_num += 1
-    submitted = st.form_submit_button("\U0001F50D 診断する")
+    submitted = st.form_submit_button("診断する")
 
 # --- 結果処理 ---
 if submitted:
@@ -96,7 +96,7 @@ if submitted:
     vals.append(vals[0])
     fig = go.Figure(data=[go.Scatterpolar(r=vals, theta=cats, fill='toself')],
                     layout=go.Layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False))
-    st.subheader("\U0001F4CA あなたの起業傾向レーダーチャート")
+    st.subheader("あなたの起業傾向レーダーチャート")
     st.plotly_chart(fig)
 
     # --- AIによるコメント生成 ---
@@ -119,8 +119,8 @@ if submitted:
 
     reply = response["choices"][0]["message"]["content"]
     st.markdown("---")
-    st.subheader("\U0001F3️ AIからのフィードバック")
+    st.subheader("AIからのフィードバック")
     st.write(reply)
 
     st.markdown("---")
-    st.write("必要に応じてサポートをご案内することもできます。あなたの強みと課題が見えてきた今、次の一歩をご一緒に考えていきましょうね\U0001F33F")
+    st.write("必要に応じてサポートをご案内することもできます。あなたの強みと課題が見えてきた今、次の一歩をご一緒に考えていきましょうね")
