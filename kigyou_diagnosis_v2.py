@@ -94,9 +94,14 @@ if submitted:
     cats.append(cats[0])
     vals.append(vals[0])
     fig = go.Figure(data=[go.Scatterpolar(r=vals, theta=cats, fill='toself')],
-                    layout=go.Layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False))
+                    layout=go.Layout(
+                        polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+                        showlegend=False,
+                        dragmode=False
+                    ))
+    fig.update_layout(uirevision=True)
     st.subheader("あなたの起業傾向レーダーチャート")
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True, config={"staticPlot": True})
 
     # --- AIによるコメント生成 ---
     prompt = """
