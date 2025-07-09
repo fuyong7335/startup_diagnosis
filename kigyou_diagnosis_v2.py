@@ -1,10 +1,9 @@
 import streamlit as st
 import plotly.graph_objects as go
-import openai
-import os
+from openai import OpenAI
 
-# --- OpenAI API キー設定（直接指定） ---
-openai.api_key = st.secrets["openai_api_key"]
+# --- OpenAI API キー設定（Secretsから取得） ---
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 # --- ページ設定 ---
 st.set_page_config(page_title="起業タイプ診断", layout="centered")
@@ -104,20 +103,19 @@ if submitted:
 あなたはキャリアコーチです。
 以下はクライアントの起業傾向スコアです。
 各カテゴリに対して、1）共感や受容を示すひとこと、2）次の一歩を後押しするアドバイス、をセットで日本語で返してください。
-
 """
     for cat, score in scores.items():
         prompt += f"\n{cat}: {score}/100"
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "あなたはやさしく寄り添うキャリアコーチです。"},
+            {"role": "system", "content": "あなたは、クライアントの回答傾向から性格や価値観、思考のパターンを的確に分析し、起業に必要な視点や可能性を見出して具体的な行動提案を行うビジネス視点を持ったキャリアコンサルタントです。診断結果に基づき、率直かつ建設的にアドバイスを伝えてください。"},
             {"role": "user", "content": prompt}
         ]
     )
 
-    reply = response["choices"][0]["message"]["content"]
+    reply = response.choices[0].message.content
     st.markdown("---")
     st.subheader("AIからのフィードバック")
     st.write(reply)
